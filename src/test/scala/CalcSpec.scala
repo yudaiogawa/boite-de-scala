@@ -1,8 +1,10 @@
 import org.scalatest._
 import org.scalatest.concurrent.Timeouts
 import org.scalatest.time.SpanSugar.convertIntToGrainOfTime
+import org.scalatest.mockito.MockitoSugar
+import org.mockito.Mockito._
 
-class CalcSpec extends FlatSpec with DiagrammedAssertions with Timeouts {
+class CalcSpec extends FlatSpec with DiagrammedAssertions with Timeouts with MockitoSugar {
 
   val sut = new Calc()
 
@@ -37,5 +39,11 @@ class CalcSpec extends FlatSpec with DiagrammedAssertions with Timeouts {
     failAfter(1000.millis) {
       assert(sut.isPrimeNumber(999999) === false)
     }
+  }
+
+  "Mocking Calc" should "Mocking" in {
+    val mockCalc = mock[Calc]
+    when(mockCalc.sum(Seq(2, 4, 8))).thenReturn(14)
+    assert(mockCalc.sum(Seq(2, 4, 8)) === 14)
   }
 }
